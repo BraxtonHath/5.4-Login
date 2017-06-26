@@ -31,19 +31,23 @@ app.use(session({
 app.use(function (req, res, next) {
 var pathname = parseurl(req).pathname;
 
-if(!req.session.user && pathname != '/login'){
-  res .redirect('/login');
+if(!req.session.user && pathname != '/login/'){
+  res .redirect('/login/');
 }else{
   next();
 }
 });
 
-app.get('/login', function (req, res) {
+app.get('/login/', function (req, res) {
   res.render('index', {});
 });
 
+app.get('/', function (req, res) {
 
-app.post('/login', function (req, res) {
+  res.send('Thank you for logging in ' + req.session.user.username + '!');
+});
+
+app.post('/login/', function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
@@ -57,15 +61,11 @@ app.post('/login', function (req, res) {
   if (req.session.user){
     res.redirect('/');
   }else{
-    res.redirect('/login');
+    res.redirect('/login/');
   }
 
 });
 
-app.get('/', function (req, res) {
-
-  res.send('it worked');
-});
 
 
 app.listen(3000);
